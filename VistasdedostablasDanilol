@@ -1,0 +1,10 @@
+CREATE VIEW clientes_oriundo AS SELECT cl.id, cl.nombre, cl.apellido, ci.nombre AS ciudad FROM clientes cl JOIN ciudades ci ON cl.localidad = ci.id;
+SELECT * FROM clientes_oriundo WHERE ciudad = 'Santa Fe';
+CREATE VIEW ciudades_provincia AS SELECT ci.nombre AS ciudad, p.nombre AS provincia FROM ciudades ci JOIN provincias p ON ci.provincia = p.id;
+CREATE VIEW provincias_ciudades AS SELECT p.nombre, COUNT(ci.id) AS ciudad_cantidad FROM provincias p JOIN ciudades ci ON p.id = ci.provincia GROUP BY p.id HAVING COUNT (ci.id) > 1;
+CREATE VIEW productos_sin_stock AS SELECT * FROM productos WHERE stock = 0;
+SELECT FROM MAX(precio) AS precio_maximo, MIN(PRECIO) AS precio_minimo FROM productos_sin_stock;
+CREATE VIEW clientes_que_compraron AS SELECT DISTINCT cl.id, cl.nombre, cl,apellido FROM clientes cl JOIN compras co ON cl.id = co.cliente;
+CREATE OR REPLACE VIEW clientes_compra AS SELECT cl.id, cl.nombre, cl.apellido, SUM(co.cant) AS total_productos FROM clientes cl JOIN compras co ON cl.id = co.cliente GROUP BY cl.id;
+CREATE OR REPLACE VIEW clientes_compra AS SELECT cl.id, cl.nombre, cl.apellido, SUM(co.cant) AS total_productos, SUM(co.cant * pr.precio) AS total_gastado FROM clientes cl JOIN compras co ON cl.id = co.cliente JOIN productos pr ON co.producto = pr.id GROUP BY cl.id;
+CREATE VIEW productos_nunca_comprados AS SELECT p.* FROM productos p LEFT JOIN compras c ON p.id = c.producto WHERE c.producto IS NULL;
