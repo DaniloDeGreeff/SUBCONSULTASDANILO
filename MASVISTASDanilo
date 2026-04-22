@@ -1,0 +1,1 @@
+SELECT cl.id, cl.nombre, cl.apellido, SUM(co.cant * pr.precio) AS total_gastado FROM clientes cl JOIN compras co on co.cliente = cl.id JOIN productos pr ON pr.id = co.producto GROUP BY cl.id ORDER BY total_gastado DESC;
